@@ -1,0 +1,81 @@
+HELP.md
+target/
+.mvn
+mvnw
+mvnw.cmd
+
+#
+# Project specific excludes
+#
+
+tomcat
+
+#
+# Default excludes
+#
+
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# Binaries
+*.7z
+*.dmg
+*.gz
+*.iso
+#*.jar
+*.rar
+*.tar
+*.zip
+*.war
+*.ear
+*.sar
+*.class
+
+# Gradle
+.gradle/
+
+# IntelliJ project files
+*.iml
+*.iws
+*.ipr
+.idea/
+out/
+
+# eclipse project file
+.settings/
+
+# NetBeans specific
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+/.nb-gradle/
+nbactions.xml
+nb-configuration.xml
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# deployment
+.swarmtemp/
+
+# OS
+.DS_Store
+
+# Misc
+*.swp
+release.properties
+pom.xml.releaseBackup
+pom.xml.tag
+dockerize_env.sh
+logs/
+
+### VS Code ###
+.vscode/
