@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: '20240402_1400_create_categories_table'
+      author: 'Asulan Maksut'
+      changes:
+        - sqlFile:
+            path: 'changeset/20240402_1400_create_categories_table.sql'
+            dbms: 'postgresql'
+            encoding: 'UTF-8'
+            endDelimiter: ';'
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+        id: '20240402_1500_create_products_table'
+        author: 'Asulan Maksut'
+        changes:
+            - sqlFile:
+                  path: 'changeset/20240402_1500_create_products_table.sql'
+                  dbms: 'postgresql'
+                  encoding: 'UTF-8'
+                  endDelimiter: ';'
+                  relativeToChangelogFile: true
+                  splitStatements: true
+                  stripComments: true
