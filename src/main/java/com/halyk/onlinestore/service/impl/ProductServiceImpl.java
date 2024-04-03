@@ -1,6 +1,7 @@
 package com.halyk.onlinestore.service.impl;
 
 import com.halyk.onlinestore.dto.product.request.ProductCreationRequest;
+import com.halyk.onlinestore.dto.product.request.ProductUpdateRequest;
 import com.halyk.onlinestore.dto.product.response.ProductResponse;
 import com.halyk.onlinestore.exception.NotFoundException;
 import com.halyk.onlinestore.mapper.ProductMapper;
@@ -59,6 +60,28 @@ public class ProductServiceImpl implements ProductService {
                 .build();
 
         productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public void update(String id, ProductUpdateRequest request) {
+        try {
+            UUID productId = UUID.fromString(id);
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new NotFoundException("Product not found"));
+
+            UUID categoryId = UUID.fromString(request.getCategoryId());
+            Category newCategory = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new NotFoundException("Category not found"));
+
+            product.setTitle(request.getTitle());
+            product.setDescription(request.getDescription());
+            product.setPrice(request.getPrice());
+            product.setCategory(newCategory);
+        } catch (IllegalArgumentException e) {
+            throw new NotFoundException("Product not found");
+        }
+
     }
 
 

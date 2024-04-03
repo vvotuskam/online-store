@@ -27,7 +27,7 @@ public class ProductCreationRequest {
     @NotBlank
     private String description;
 
-    @NotBlank
     @UUID
+    @NotBlank
     private String categoryId;
 }
