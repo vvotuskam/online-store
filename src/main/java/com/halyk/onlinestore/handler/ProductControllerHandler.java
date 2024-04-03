@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice(assignableTypes = ProductController.class)
@@ -33,19 +31,23 @@ public class ProductControllerHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException e) {
         log.warn("Validation exception occurred", e);
-        Map<String, String> errors = new HashMap<>();
-
-        e.getBindingResult().getAllErrors().forEach(error -> {
-            String field = ((FieldError) error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(field, message);
-        });
+        var errorFields = e.getBindingResult().getAllErrors()
+                .stream()
+                .map(error -> {
+                    String field = ((FieldError) error).getField();
+                    String message = error.getDefaultMessage();
+                    return ErrorResponse.ErrorField.builder()
+                            .field(field)
+                            .message(message)
+                            .build();
+                })
+                .toList();
 
         ErrorResponse response = ErrorResponse.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
                 .message("Bad request")
                 .timestamp(LocalDateTime.now())
-                .fieldErrors(errors)
+                .fieldErrors(errorFields)
                 .build();
 
         return ResponseEntity.badRequest().body(response);

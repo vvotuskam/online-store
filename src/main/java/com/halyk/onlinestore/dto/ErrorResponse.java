@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,5 +24,15 @@ public class ErrorResponse {
     private LocalDateTime timestamp;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Object fieldErrors;
+    private List<ErrorField> fieldErrors;
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ErrorField {
+        private String field;
+        private String message;
+    }
 }
