@@ -23,3 +23,15 @@ databaseChangeLog:
                   relativeToChangelogFile: true
                   splitStatements: true
                   stripComments: true
+  - changeSet:
+      id: '20240403_1200_create_users_table'
+      author: 'Asulan Maksut'
+      changes:
+        - sqlFile:
+            path: 'changeset/20240403_1200_create_users_table.sql'
+            dbms: 'postgresql'
+            encoding: 'UTF-8'
+            endDelimiter: ';'
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
