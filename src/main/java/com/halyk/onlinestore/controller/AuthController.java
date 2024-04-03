@@ -6,8 +6,6 @@ import com.halyk.onlinestore.dto.auth.request.RefreshRequest;
 import com.halyk.onlinestore.dto.auth.response.AuthResponse;
 import com.halyk.onlinestore.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
