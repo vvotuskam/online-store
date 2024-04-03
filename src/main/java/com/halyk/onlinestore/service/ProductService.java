@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<ProductResponse> getAll();
+    List<ProductResponse> getAll(Integer page, Integer size, String sortBy);
 
     ProductResponse getById(String id);
 

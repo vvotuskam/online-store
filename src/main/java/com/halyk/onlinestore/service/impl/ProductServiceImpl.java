@@ -11,6 +11,11 @@ import com.halyk.onlinestore.repository.CategoryRepository;
 import com.halyk.onlinestore.repository.ProductRepository;
 import com.halyk.onlinestore.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,13 +30,21 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
 
+    private static final String DEFAULT_SORT_BY = "createdAt";
 
     @Override
-    public List<ProductResponse> getAll() {
-        return productRepository.findAll()
-                .stream()
-                .map(productMapper::toResponse)
-                .toList();
+    public List<ProductResponse> getAll(Integer page, Integer size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Product> products;
+
+        try {
+            products = productRepository.findAll(pageable);
+        } catch (PropertyReferenceException e) {
+            pageable = PageRequest.of(page, size, Sort.by(DEFAULT_SORT_BY));
+            products = productRepository.findAll(pageable);
+        }
+
+        return products.map(productMapper::toResponse).toList();
     }
 
     @Override
