@@ -43,7 +43,6 @@ public class AuthController {
                             """,
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
-
             @ApiResponse(responseCode = "401",
                     description = """
                             If an incorrect username or an incorrect password is sent, the service returns
