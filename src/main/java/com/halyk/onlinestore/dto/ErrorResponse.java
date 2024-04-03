@@ -25,5 +25,5 @@ public class ErrorResponse {
     private LocalDateTime timestamp;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<FieldError> fieldErrors;
+    private Object fieldErrors;
 }

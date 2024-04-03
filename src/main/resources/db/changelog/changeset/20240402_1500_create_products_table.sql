@@ -2,7 +2,7 @@ create table if not exists products
 (
     id          uuid         not null primary key default gen_random_uuid(),
     title       varchar(255) not null check ( length(title) > 0 ),
-    price       float        not null check ( price > 0 ),
+    price       decimal        not null check ( price > 0 ),
     description text         not null check ( length(description) > 0 ),
     created_at  timestamp    not null             default current_timestamp,
     updated_at  timestamp    not null             default current_timestamp,
