@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization"); // check for existence of Auth header
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -48,6 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = optionalUsername.get();
             UserDetails userDetails = userService.loadUserByUsername(username);
 
+            // check if such access token exists and if it is valid
             boolean isValid = jwtTokenRepository
                                       .findByToken(jwt)
                                       .filter(j -> j.getType() == JwtTokenType.ACCESS)

@@ -37,9 +37,11 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Product> products;
 
+        // try to get page by provided 'sortBy' param
         try {
             products = productRepository.findAll(pageable);
         } catch (PropertyReferenceException e) {
+            // if provided 'sortBy' is invalid, get page by default value
             pageable = PageRequest.of(page, size, Sort.by(DEFAULT_SORT_BY));
             products = productRepository.findAll(pageable);
         }

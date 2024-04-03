@@ -24,6 +24,9 @@ public class JwtUtils {
     private final JwtProperties jwtProperties;
 
     public String generateJwt(UserDetails user, JwtTokenType tokenType) {
+
+        // token generation
+        // access and refresh tokens have different expiration time
         long expirationTime = switch (tokenType) {
             case ACCESS -> jwtProperties.getAccessExpiration();
             case REFRESH -> jwtProperties.getRefreshExpiration();
@@ -44,6 +47,9 @@ public class JwtUtils {
     }
 
     public Optional<String> extractUsername(String jwt) {
+
+        // try to extract username
+        // if token is invalid, return empty optional
         try {
             Claims claims = Jwts
                     .parserBuilder()
@@ -63,6 +69,9 @@ public class JwtUtils {
     }
 
     public boolean validate(String jwt, UserDetails userDetails) {
+
+        // compare username from jwt and userDetails
+        // and check for jwt for expiration
         return extractUsername(jwt)
                 .filter(s -> s.equals(userDetails.getUsername()) && !isTokenExpired(jwt))
                 .isPresent();

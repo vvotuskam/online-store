@@ -13,7 +13,6 @@ import com.halyk.onlinestore.service.AuthService;
 import com.halyk.onlinestore.service.JwtTokenService;
 import com.halyk.onlinestore.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponse login(AuthRequest request) {
-        tryAuthorize(request.getUsername(), request.getPassword());
+        tryAuthorize(request.getUsername(), request.getPassword()); // check user credentials
 
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(AuthorizationException::new);
@@ -56,6 +55,7 @@ public class AuthServiceImpl implements AuthService {
             throw new AuthorizationException();
         }
 
+        // check if such refresh exists in db
         JwtToken jwtToken = jwtTokenRepository.findByToken(refreshToken)
                 .filter(token -> token.getType() == JwtTokenType.REFRESH)
                 .orElseThrow(AuthorizationException::new);
