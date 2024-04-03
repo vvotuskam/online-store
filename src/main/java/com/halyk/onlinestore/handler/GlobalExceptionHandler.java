@@ -1,7 +1,7 @@
 package com.halyk.onlinestore.handler;
 
-import com.halyk.onlinestore.controller.ProductController;
 import com.halyk.onlinestore.dto.ErrorResponse;
+import com.halyk.onlinestore.exception.AuthorizationException;
 import com.halyk.onlinestore.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = ProductController.class)
-public class ProductControllerHandler {
+@RestControllerAdvice
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException e) {
@@ -29,7 +29,7 @@ public class ProductControllerHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
         log.warn("Validation exception occurred", e);
         var errorFields = e.getBindingResult().getAllErrors()
                 .stream()
@@ -51,5 +51,16 @@ public class ProductControllerHandler {
                 .build();
 
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthException(AuthorizationException e) {
+        log.warn("Authorization exception occurred", e);
+        ErrorResponse response = ErrorResponse.builder()
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .message("Unauthorized")
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

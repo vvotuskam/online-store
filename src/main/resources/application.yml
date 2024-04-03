@@ -8,6 +8,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/online_store
   security:
     jwt:
-      secret: fdfdfd
+      secret: VeryStrangeSecretForJWTHS512SignatureAlgorithm64ByteLength
       access-expiration: 1
       refresh-expiration: 24

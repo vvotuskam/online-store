@@ -7,5 +7,6 @@ create table if not exists users
 
 create unique index unq_user_username on users(username);
 
--- insert into users(username, password)
--- values ('user', )
+-- default user(username=user, password=password)
+insert into users(username, password)
+values ('user', '$2a$12$JfJErUdCRWC.ygqlhro.Q.17AcXLC2qdCVpztVUYmZ15aCDBNEYN.');

@@ -42,9 +42,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = authHeader.substring(7);
         var optionalUsername = jwtUtils.extractUsername(jwt);
 
-        boolean isAuthenticated = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+        boolean noAuthentication = SecurityContextHolder.getContext().getAuthentication() == null;
 
-        if (optionalUsername.isPresent() && !isAuthenticated) {
+        if (optionalUsername.isPresent() && noAuthentication) {
             String username = optionalUsername.get();
             UserDetails userDetails = userService.loadUserByUsername(username);
 
