@@ -13,6 +13,7 @@ import com.halyk.onlinestore.service.AuthService;
 import com.halyk.onlinestore.service.JwtTokenService;
 import com.halyk.onlinestore.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final JwtTokenRepository jwtTokenRepository;
     private final JwtTokenService jwtTokenService;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
@@ -46,8 +48,27 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public AuthResponse refresh(RefreshRequest request) {
-        return null;
+        String refreshToken = request.getRefreshToken();
+
+        if (jwtUtils.isTokenExpired(refreshToken)) {
+            throw new AuthorizationException();
+        }
+
+        JwtToken jwtToken = jwtTokenRepository.findByToken(refreshToken)
+                .filter(token -> token.getType() == JwtTokenType.REFRESH)
+                .orElseThrow(AuthorizationException::new);
+
+        User user = jwtToken.getUser();
+
+        String newAccessToken = jwtUtils.generateJwt(user, JwtTokenType.ACCESS);
+        jwtTokenService.saveUserToken(user, newAccessToken, JwtTokenType.ACCESS);
+
+        String newRefreshToken = jwtUtils.generateJwt(user, JwtTokenType.REFRESH);
+        jwtTokenService.saveUserToken(user, newRefreshToken, JwtTokenType.REFRESH);
+
+        return new AuthResponse(newAccessToken, newRefreshToken);
     }
 
     private void tryAuthorize(String username, String password) {

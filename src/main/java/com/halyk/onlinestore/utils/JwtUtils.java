@@ -68,7 +68,7 @@ public class JwtUtils {
                 .isPresent();
     }
 
-    private boolean isTokenExpired(String jwtToken) {
+    public boolean isTokenExpired(String jwtToken) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(this.getSignInKey())
                 .build()

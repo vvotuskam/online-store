@@ -1,6 +1,7 @@
 package com.halyk.onlinestore.controller;
 
 import com.halyk.onlinestore.dto.auth.request.AuthRequest;
+import com.halyk.onlinestore.dto.auth.request.RefreshRequest;
 import com.halyk.onlinestore.dto.auth.response.AuthResponse;
 import com.halyk.onlinestore.service.AuthService;
 import jakarta.validation.Valid;
@@ -21,5 +22,10 @@ public class AuthController {
     @PostMapping
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@RequestBody @Valid RefreshRequest request) {
+        return ResponseEntity.ok(authService.refresh(request));
     }
 }
