@@ -3,6 +3,7 @@ package com.halyk.onlinestore.handler;
 import com.halyk.onlinestore.controller.ProductController;
 import com.halyk.onlinestore.dto.ErrorResponse;
 import com.halyk.onlinestore.exception.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,11 +15,13 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice(assignableTypes = ProductController.class)
 public class ProductControllerHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException e) {
+        log.warn("Not found exception occurred", e);
         ErrorResponse response = ErrorResponse.builder()
                 .status(HttpStatus.NOT_FOUND.value())
                 .message(e.getMessage())
@@ -29,6 +32,7 @@ public class ProductControllerHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException e) {
+        log.warn("Validation exception occurred", e);
         Map<String, String> errors = new HashMap<>();
 
         e.getBindingResult().getAllErrors().forEach(error -> {

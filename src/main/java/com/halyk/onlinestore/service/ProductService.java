@@ -15,4 +15,6 @@ public interface ProductService {
     void create(ProductCreationRequest request);
 
     void update(String id, ProductUpdateRequest request);
+
+    void delete(String id);
 }

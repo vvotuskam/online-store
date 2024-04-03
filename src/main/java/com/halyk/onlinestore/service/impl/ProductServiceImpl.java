@@ -81,8 +81,18 @@ public class ProductServiceImpl implements ProductService {
         } catch (IllegalArgumentException e) {
             throw new NotFoundException("Product not found");
         }
-
     }
 
-
+    @Override
+    @Transactional
+    public void delete(String id) {
+        try {
+            UUID productId = UUID.fromString(id);
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new NotFoundException("Product not found"));
+            productRepository.delete(product);
+        } catch (IllegalArgumentException e) {
+            throw new NotFoundException("Product not found");
+        }
+    }
 }
