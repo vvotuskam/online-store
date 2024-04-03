@@ -38,7 +38,7 @@ public class CategoryController {
             ),
             @ApiResponse(responseCode = "401",
                     description = """
-                            If an incorrect username or an incorrect password is sent, the service returns
+                            If an incorrect JWT is sent, the service returns
                             a general authorization error with `status = 401` and the following description of the reason in
                             the `message` field:
                                           
@@ -65,7 +65,7 @@ public class CategoryController {
             @ApiResponse(
                     responseCode = "401",
                     description = """
-                            If an incorrect username or an incorrect password is sent, the service returns
+                            If an incorrect JWT is sent, the service returns
                             a general authorization error with `status = 401` and the following description of the reason in
                             the `message` field:
                                           
