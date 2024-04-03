@@ -1,7 +1,12 @@
 # Halyk Online Store
-Done by ```Asulan Maksut```
+Done by `Asulan Maksut`
 
 This project is a simple CRUD (Create, Read, Update, Delete) API for managing products in an online store. The application provides basic operations for creating, reading, updating, and deleting products from the catalog.
+
+### Technologies Used
+- Java 17
+- Spring Boot 3.1.0
+- PostgreSQL
 
 ### Instructions for Running the Application
 
