@@ -1,6 +1,35 @@
 version: '3.4'
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: online_store
+      JWT_SECRET: VeryStrangeSecretForJWTHS512SignatureAlgorithm64ByteLength
+      ACCESS_EXPIRATION: 1
+      REFRESH_EXPIRATION: 24
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    command: [
+      "java",
+      "-Xmx2048m",
+      "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005",
+      "-jar",
+      "/app.jar",
+      "--server.port=8080",
+      "--spring.profiles.active=docker"
+    ]
+    depends_on:
+      - postgres
+
   postgres:
     container_name: postgres
     image: postgres
