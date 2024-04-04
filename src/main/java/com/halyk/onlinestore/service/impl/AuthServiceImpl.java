@@ -51,7 +51,8 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse refresh(RefreshRequest request) {
         String refreshToken = request.getRefreshToken();
 
-        if (jwtUtils.isTokenExpired(refreshToken)) {
+        boolean isValid = jwtUtils.extractUsername(refreshToken).isPresent();
+        if (!isValid || jwtUtils.isTokenExpired(refreshToken)) {
             throw new AuthorizationException();
         }
 
